@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * The purpose of thie project is to check if those given website are alive or inactive on the network
  *
  * @author duyvu
  */
@@ -30,6 +31,11 @@ public class URLCheckWebsiteAlive {
         }
     }
 
+    /**
+     * Check the website's existance based on code response code
+     *
+     * @param urlString :given urlstring
+     */
     public static void checkWebsite(String urlString) {
         try {
             URL url = URI.create(urlString).toURL();

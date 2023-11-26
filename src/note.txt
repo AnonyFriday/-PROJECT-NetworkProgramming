@@ -23,4 +23,22 @@ URL (Uniform Resource Locator)
         
 URN (Uniform Resource Name)
     Refers to just a name 
-    
+
+=======================================
+== Utilities Class
+=======================================
+
+HttpURLConnection
+URL
+URI
+
+=======================================
+== Socket Programming
+=======================================
+
+class Socket
+    implemented at clients
+
+class ServerSocket
+    implemented at server
+
