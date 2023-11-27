@@ -16,6 +16,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * This application demo the concept of singlethread application
+ * Drawback:
+ * - Since the application runs only in 1 single thread, it stucks
+ * when the client does not enter any input
+ * - Other clients connects to the server will be blocked
  *
  * @author duyvu
  */
@@ -62,6 +67,8 @@ public class ServerSide {
 
                     // Send back the price to the client 
                     outputStream.write(price.getBytes());
+
+                    System.out.println("Response sent to client ...");
                 }
             }
         } catch (IOException ex) {
