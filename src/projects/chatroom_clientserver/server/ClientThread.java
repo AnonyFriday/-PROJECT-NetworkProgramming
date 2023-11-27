@@ -4,7 +4,14 @@
  */
 package projects.chatroom_clientserver.server;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,17 +26,40 @@ public class ClientThread implements Runnable {
     private ServerSide server;
     private String clientID;
 
+    BufferedReader reader;
+    PrintWriter writer;
+
     // =================================
     // == Constructors
     // ================================= 
     public ClientThread(Socket clientSocket, String clientID) {
         this.clientSocket = clientSocket;
         this.clientID = clientID;
+
+        try {
+            reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            writer = new PrintWriter(clientSocket.getOutputStream());
+        } catch (IOException ex) {
+            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        // Continuously server one client until the client's socket is closed
+        while (!clientSocket.isClosed()) {
+            try {
+
+                // Check if the reader stream is avaialble or not 
+                if (reader.ready()) {
+                    String message = reader.readLine();
+                    server.
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     // =================================
