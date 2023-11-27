@@ -29,7 +29,7 @@ public class ClientSide {
     public final static int SERVER_PORT = 9999;
 
     // ============================
-    // = Fields
+    // = Main function for sending request and get response from server
     // ============================
     public static void main(String[] args) {
         try (Socket clientSocket = new Socket()) {

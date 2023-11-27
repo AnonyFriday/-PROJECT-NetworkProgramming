@@ -22,14 +22,22 @@ import java.util.logging.Logger;
 
 /**
  * The purpose of this application is to demonstrate the server side socket
+ * - No threading supported
+ * - Not multiclient connection supported
  *
  * @author duyvu
  */
 public class ServerSide {
 
+    // ============================
+    // = Fields
+    // ============================
     public final static int SERVER_PORT = 9999;
     public final static String SERVER_IP = "localhost";
 
+    // ============================
+    // = Main function for sending request and get response from 1 client
+    // ============================
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket()) {
             serverSocket.bind(new InetSocketAddress(SERVER_IP, SERVER_PORT));
