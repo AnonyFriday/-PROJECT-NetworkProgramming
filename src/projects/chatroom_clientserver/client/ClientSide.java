@@ -29,7 +29,6 @@ public class ClientSide {
     private int serverPort;
 
     private PrintWriter writer;
-    private BufferedReader reader;
     private final Scanner sc = new Scanner(System.in);
 
     // ======================================
@@ -47,18 +46,28 @@ public class ClientSide {
     public void startClient() {
 
         try {
+            // Connect to the server port and server ip
             clientSocket = new Socket();
-            clientSocket.bind(new InetSocketAddress(serverIP, serverPort));
+            clientSocket.connect(new InetSocketAddress(serverIP, serverPort));
 
-            this.writer = new PrintWriter(clientSocket.getOutputStream());
-            this.reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            writer = new PrintWriter(clientSocket.getOutputStream());
 
-            boolean isDisconnect = false;
+            // A thread recieving a message from the server
+            ClientListener clientListerner = new ClientListener(clientSocket);
+            new Thread(clientListerner).start();
 
-            do {
-                System.out.println("Client");
+            // Sending a message to the server
+            while (true) {
+                System.out.print("Type your message: ");
                 String msg = sc.nextLine();
-            } while (!isDisconnect);
+
+                // Type message and send to the socket
+                if (!msg.trim().isEmpty()) {
+                    writer.println(msg);
+                    writer.flush();
+                }
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(ClientSide.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -26,16 +26,18 @@ public class ClientThread implements Runnable {
     private ServerSide server;
     private String clientID;
 
-    BufferedReader reader;
-    PrintWriter writer;
+    private BufferedReader reader;
+    private PrintWriter writer;
 
     // =================================
     // == Constructors
     // ================================= 
     public ClientThread(Socket clientSocket,
-                        String clientID) {
+                        String clientID,
+                        ServerSide server) {
         this.clientSocket = clientSocket;
         this.clientID = clientID;
+        this.server = server;
 
         try {
             reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -51,14 +53,14 @@ public class ClientThread implements Runnable {
     @Override
     public void run() {
 
-        // Continuously server one client until the client's socket is closed
+        // Continuously serve one client until the client's socket is closed
         while (!clientSocket.isClosed()) {
             try {
 
                 // Check if the reader stream is avaialble or not 
                 if (reader.ready()) {
                     String message = reader.readLine();
-                    server.boardcastMessage(this, message);
+                    server.boardcastMessage(this.getClientID(), message);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,7 +74,8 @@ public class ClientThread implements Runnable {
      * @param message
      */
     public void sendMessage(String message) {
-        writer.write(message);
+        writer.println(message);
+        writer.flush();
     }
 
     // =================================
