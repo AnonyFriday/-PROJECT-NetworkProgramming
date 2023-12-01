@@ -2,21 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package projects._nothread_clientserver;
+package projects._tcp_multithread_clientserver.client;
 
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The purpose of this application is to demonstrate the client side socket
  *
  * @author duyvu
  */
@@ -32,6 +30,8 @@ public class ClientSide {
     // = Main function for sending request and get response from server
     // ============================
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
         try (Socket clientSocket = new Socket()) {
 
             // Create the connection to the ip address "localhost" with port 9999
@@ -41,21 +41,19 @@ public class ClientSide {
             InputStream inputStream = clientSocket.getInputStream();
             OutputStream outputStream = clientSocket.getOutputStream();
 
-            // Sending message to server with a buffer of 100 bytes
-            BufferedOutputStream bos = new BufferedOutputStream(outputStream, 128);
+            // Enter the product info and sends to the server
+            System.out.print("Enter your product info: ");
+            String product = sc.nextLine();
 
-            // Send msg to server
-            for (int i = 0; i <= 10; i++) {
-                bos.write(("Client: Hello Vũ client..." + i + "\n").getBytes());
-            }
+            outputStream.write(product.getBytes(StandardCharsets.UTF_8));
 
-            // Reading data from the server
+            // Reading data response back from the server
             byte[] response = new byte[1028];
             inputStream.read(response);
-            System.out.println("Client: Received from server (" + new String(response).trim() + ")");
+            System.out.println(new String(response).trim());
 
         } catch (IOException ex) {
-            Logger.getLogger(ClientSide.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(projects._tcp_nothread_clientserver.ClientSide.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

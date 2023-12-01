@@ -1,9 +1,9 @@
+package projects._tcp_multithread_clientserver.server;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package projects._singlethread_clientserver.server;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +14,7 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import projects._multithread_clientserver.server.ServiceThread;
+import projects._tcp_multithread_clientserver.server.ServiceThread;
 
 /**
  * This application demo the concept of multithread application
@@ -51,7 +51,7 @@ public class ServerSide {
                 new ServiceThread(clientSocket).start();
             }
         } catch (IOException ex) {
-            Logger.getLogger(projects._nothread_clientserver.ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(projects._tcp_nothread_clientserver.ServerSide.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

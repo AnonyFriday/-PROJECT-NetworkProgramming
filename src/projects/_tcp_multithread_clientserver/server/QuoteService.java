@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package projects._singlethread_clientserver.server;
+package projects._tcp_multithread_clientserver.server;
 
 import java.util.HashMap;
 import java.util.Map;

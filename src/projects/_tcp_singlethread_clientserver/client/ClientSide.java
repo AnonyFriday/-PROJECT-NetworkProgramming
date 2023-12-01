@@ -1,21 +1,18 @@
+package projects._tcp_singlethread_clientserver.client;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package projects.client_server;
-
-import com.sun.org.apache.xerces.internal.impl.dtd.models.CMAny;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 /**
- * The purpose of this application is to demonstrate the client side socket
  *
  * @author duyvu
  */
@@ -28,9 +25,11 @@ public class ClientSide {
     public final static int SERVER_PORT = 9999;
 
     // ============================
-    // = Fields
+    // = Main function for sending request and get response from server
     // ============================
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
         try (Socket clientSocket = new Socket()) {
 
             // Create the connection to the ip address "localhost" with port 9999
@@ -40,16 +39,19 @@ public class ClientSide {
             InputStream inputStream = clientSocket.getInputStream();
             OutputStream outputStream = clientSocket.getOutputStream();
 
-            // Send msg to server
-            outputStream.write("Client: Hello from client...\n".getBytes());
+            // Enter the product info and sends to the server
+            System.out.print("Enter your product info: ");
+            String product = sc.nextLine();
 
-            // Reading data from the server
+            outputStream.write(product.getBytes(StandardCharsets.UTF_8));
+
+            // Reading data response back from the server
             byte[] response = new byte[1028];
             inputStream.read(response);
-            System.out.println("Client: Received from server (" + new String(response).trim() + ")");
+            System.out.println(new String(response).trim());
 
         } catch (IOException ex) {
-            Logger.getLogger(ClientSide.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 }

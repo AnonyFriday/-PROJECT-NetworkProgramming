@@ -22,10 +22,11 @@ import java.util.logging.Logger;
  */
 public class Client {
 
+    // Server environments
     public final static int SERVER_PORT = 9000;
     public final static String SERVER_IP = "localhost";
-    public final static byte[] BUFFER = new byte[4096];
 
+    // Method to start a client
     public static void startClient() {
         try {
 

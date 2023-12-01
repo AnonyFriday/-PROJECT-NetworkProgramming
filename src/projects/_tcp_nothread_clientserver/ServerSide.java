@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package projects.client_server_no_thread;
+package projects._tcp_nothread_clientserver;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

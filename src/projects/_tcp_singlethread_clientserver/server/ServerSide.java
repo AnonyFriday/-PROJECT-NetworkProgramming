@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package projects.client_server_singlethread;
+package projects._tcp_singlethread_clientserver.server;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -11,10 +11,16 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * This application demo the concept of singlethread application
+ * Drawback:
+ * - Since the application runs only in 1 single thread, it stucks
+ * when the client does not enter any input
+ * - Other clients connects to the server will be blocked
  *
  * @author duyvu
  */
@@ -25,11 +31,13 @@ public class ServerSide {
 
     public final static int SERVER_PORT = 9999;
     public final static String SERVER_IP = "localhost";
+    private final static QuoteService quoteService = new QuoteService();
 
     // ============================
     // = Main function for sending request and get response from 1 client
     // ============================
     public static void main(String[] args) {
+
         try (ServerSocket serverSocket = new ServerSocket()) {
             serverSocket.bind(new InetSocketAddress(SERVER_IP, SERVER_PORT));
 
@@ -50,15 +58,21 @@ public class ServerSide {
                 if (bis.read(request) != -1) {
                     // Getting product from the client
                     String product = new String(request).trim();
+                    String price = quoteService.getQuote(product);
 
-                    System.out.println(new String(buffer).trim() + "(" + bytes + ")");
+                    // Check if price is not null
+                    if (price == null) {
+                        price = "\t+ The product info is invalid";
+                    }
 
-                    // Send message to the client 
-                    outputStream.write("Server: Hello from Server ...".getBytes());
+                    // Send back the price to the client 
+                    outputStream.write(price.getBytes());
+
+                    System.out.println("Response sent to client ...");
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(projects.client_server_no_thread.ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(projects._tcp_nothread_clientserver.ServerSide.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
