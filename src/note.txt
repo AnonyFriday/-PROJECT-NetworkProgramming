@@ -33,12 +33,39 @@ URL
 URI
 
 =======================================
-== Socket Programming
+== Packet, Datagram
 =======================================
+
+
+Datagram
+    Individual packet, contains 
+
+
+=======================================
+== TCP Programming
+=======================================
+
+How does it work
+    Server creates socket, open port
+    Client creates socket, open port
+    Request to connect to the Server socket
+    Server accept the request of the client and locate the connection at the 
+        other other port (not the current one)
+    
+    A virtual connection has been establish between Server and Client
+
 
 class Socket
     implemented at clients
 
 class ServerSocket
     implemented at server
+
+=======================================
+== UDP Programming
+=======================================
+
+class DatagramPacket
+
+class DatagranSocket
 
