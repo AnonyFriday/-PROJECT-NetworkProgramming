@@ -54,13 +54,19 @@ final public class Server {
                 serverSocket.receive(receivingPacket);
 
                 // Get IP Address msg from domain name and sender's port, sender's ip address
-                String domainName = new String(receivingPacket.getData(), 0, receivingPacket.getLength());
-                String ipAddress = DNSLookup.getInstance().getIpAddress(domainName.trim().toLowerCase());
                 InetAddress senderAddress = receivingPacket.getAddress();
                 int senderPort = receivingPacket.getPort();
 
+                String domainName = new String(receivingPacket.getData(), 0, receivingPacket.getLength());
+                String ipAddressMsg = DNSLookup.getInstance().getIpAddress(domainName.trim().toLowerCase());
+
+                if (ipAddressMsg == null) {
+                    // Send information to the sender
+                    sendIpAddressToClients("IP address not found. Please try again.", senderAddress, senderPort);
+                }
+
                 // Send information to the sender
-                sendIpAddressToClients(ipAddress, senderAddress, senderPort);
+                sendIpAddressToClients(ipAddressMsg, senderAddress, senderPort);
             }
         } catch (SocketException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
