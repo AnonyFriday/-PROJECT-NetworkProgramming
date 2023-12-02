@@ -16,7 +16,7 @@ public class DNSLookup {
     // =================================
     // == Constructor
     // =================================
-    public Map<String, String> dnsMapping;
+    private Map<String, String> dnsMapping;
 
     // =================================
     // == Constructor (Singleton)
@@ -43,5 +43,21 @@ public class DNSLookup {
             dns_instance = new DNSLookup();
         }
         return dns_instance;
+    }
+
+    /**
+     * Get the IPAddress based on domain name
+     *
+     * @param domainName
+     *
+     * @return
+     */
+    public String getIpAddress(String domainName) {
+        if (dnsMapping.isEmpty() || !dnsMapping.containsKey(domainName)) {
+            return null;
+        }
+        else {
+            return dnsMapping.get(domainName);
+        }
     }
 }
