@@ -22,9 +22,21 @@ final public class Server {
     // =================================
     // == Fields
     // =================================
-    private static String SERVER_IP = "localhost";
-    private static int SERVER_PORT = 8080;
-    DatagramSocket serverSocket;
+    public static String SERVER_IP = "localhost";
+    public static int SERVER_PORT = 8080;
+    private DatagramSocket serverSocket;
+
+    // =================================
+    // == Constructor
+    // =================================
+    public Server() {
+        try {
+            // Create the socket object without starting it 
+            serverSocket = new DatagramSocket(null);
+        } catch (SocketException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     // =================================
     // == Methods
@@ -32,7 +44,6 @@ final public class Server {
     public void startServer() {
         try {
             // Staring the UDP server
-            serverSocket = new DatagramSocket(null);
             serverSocket.bind(new InetSocketAddress(SERVER_IP, SERVER_PORT));
             System.out.println("DNS Server is running ... ");
 
