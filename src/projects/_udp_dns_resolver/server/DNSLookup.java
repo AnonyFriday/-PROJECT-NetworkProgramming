@@ -19,18 +19,29 @@ public class DNSLookup {
     public Map<String, String> dnsMapping;
 
     // =================================
-    // == Constructor
+    // == Constructor (Singleton)
     // =================================
     private static DNSLookup dns_instance = null;
 
+    // Setting some default domain name
     private DNSLookup() {
+        dnsMapping.put("www.google.com", "8.8.8.8");
+        dnsMapping.put("www.example1.com", "192.168.1.2");
+        dnsMapping.put("www.example2.com", "192.168.1.12");
     }
 
+    // =================================
+    // == Methods
+    // =================================
+    /**
+     * Get the only instance of the class DNSLookup
+     *
+     * @return an instance of the class
+     */
     public static DNSLookup getInstance() {
         if (dns_instance == null) {
             dns_instance = new DNSLookup();
         }
         return dns_instance;
     }
-
 }
