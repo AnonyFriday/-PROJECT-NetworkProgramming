@@ -25,6 +25,7 @@ public class DNSLookup {
 
     // Setting some default domain name
     private DNSLookup() {
+        dnsMapping = new HashMap<>();
         dnsMapping.put("www.google.com", "8.8.8.8");
         dnsMapping.put("www.example1.com", "192.168.1.2");
         dnsMapping.put("www.example2.com", "192.168.1.12");
