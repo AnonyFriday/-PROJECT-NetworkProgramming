@@ -61,12 +61,13 @@ final public class Server {
                 String ipAddressMsg = DNSLookup.getInstance().getIpAddress(domainName.trim().toLowerCase());
 
                 if (ipAddressMsg == null) {
-                    // Send information to the sender
-                    sendIpAddressToClients("IP address not found. Please try again.", senderAddress, senderPort);
+                    // Send Message not found to the sender
+                    sendMsgToClient("IP address not found. Please try again.", senderAddress, senderPort);
                 }
-
-                // Send information to the sender
-                sendIpAddressToClients(ipAddressMsg, senderAddress, senderPort);
+                else {
+                    // Send information to the sender
+                    sendMsgToClient(ipAddressMsg, senderAddress, senderPort);
+                }
             }
         } catch (SocketException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,7 +83,7 @@ final public class Server {
      * @param senderAddr
      * @param senderPort
      */
-    private void sendIpAddressToClients(String msg, InetAddress senderAddr, int senderPort) {
+    private void sendMsgToClient(String msg, InetAddress senderAddr, int senderPort) {
         try {
             // Sending back the ip address for those who sent a domain name
             DatagramPacket sendingPacket = new DatagramPacket(msg.getBytes(), msg.length());
@@ -102,6 +103,5 @@ final public class Server {
     public static void main(String[] args) {
         Server server = new Server();
         server.startServer();
-
     }
 }
