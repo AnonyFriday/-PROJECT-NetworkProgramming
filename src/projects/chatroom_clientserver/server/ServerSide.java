@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.util.Duration;
 
 /**
  * The multi-client room chat server with broadcasting feature
@@ -41,6 +40,7 @@ public class ServerSide {
     // ======================================
     // = Methods
     // ======================================
+
     /**
      * An entry point function to start the server
      */
