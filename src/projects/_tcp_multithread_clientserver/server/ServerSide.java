@@ -47,7 +47,7 @@ public class ServerSide {
                 System.out.println("Client accepted: " + clientSocket + ".");
                 System.out.println("Starting a thread serving the client.");
 
-                // Conducting a multithread service wont block the server
+                // Conducting a multithreading service wont block the server
                 new ServiceThread(clientSocket).start();
             }
         } catch (IOException ex) {
