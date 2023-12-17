@@ -4,15 +4,13 @@
  */
 package projects._tcp_multithread_clientserver.server;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * A single thread server only for an individual request
  *
  * @author duyvu
  */
@@ -33,17 +31,16 @@ public class ServiceThread extends Thread {
     public void run() {
 
         try {
-            // Access the input and output stream of the client socket
-            InputStream inputStream = socket.getInputStream();
+            // Access the input and output stream of the client socket\
             OutputStream outputStream = socket.getOutputStream();
 
             // Receive the message from the client
-            BufferedInputStream bis = new BufferedInputStream(inputStream);
-            byte[] request = new byte[100];
+            BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
+            byte[] requestBuffer = new byte[100];
 
-            if (bis.read(request) != -1) {
+            if (bis.read(requestBuffer) != -1) {
                 // Getting product from the client
-                String product = new String(request).trim();
+                String product = new String(requestBuffer).trim();
                 String price = quoteService.getQuote(product);
 
                 // Check if price is not null
@@ -55,12 +52,16 @@ public class ServiceThread extends Thread {
                 outputStream.write(price.getBytes());
 
                 System.out.println("Response sent to client ...");
-
-                // Close the connection
-                socket.close();
             }
         } catch (IOException ex) {
             Logger.getLogger(ServiceThread.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Close the connection
+            try {
+                socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
