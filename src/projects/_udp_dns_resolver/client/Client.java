@@ -5,18 +5,14 @@
 package projects._udp_dns_resolver.client;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import projects._udp_dns_resolver.server.Server;
 
 /**
- *
  * @author duyvu
  */
 public class Client {
@@ -45,15 +41,12 @@ public class Client {
     public void startClient() {
         while (true) {
             try {
-                System.out.println("Nhập vào tên miền cần tìm IP:");
-                String domainName = sc.nextLine();
+                System.out.println("Lookup IP address based on domain name:");
+                String domainNameRequest = sc.nextLine();
 
                 // Send a request to a server
-                byte[] sendData = domainName.getBytes();
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length);
-                sendPacket.setPort(Server.SERVER_PORT);
-                sendPacket.setAddress(InetAddress.getByName(Server.SERVER_IP));
-                clientSocket.send(sendPacket);
+                InetAddress serverAddress = InetAddress.getByName(Server.SERVER_IP);
+                sendMsgToServer(domainNameRequest, serverAddress, Server.SERVER_PORT);
 
                 // Receive a response from a server
                 byte[] receiveData = new byte[1024];
@@ -69,6 +62,21 @@ public class Client {
                 ex.printStackTrace();
             }
         }
+    }
+
+    /**
+     * A function to send request to server
+     *
+     * @param msg
+     * @param serverAddress
+     * @param port
+     * @throws IOException
+     */
+    public void sendMsgToServer(String msg, InetAddress serverAddress, int port) throws IOException {
+        DatagramPacket sendPacket = new DatagramPacket(msg.getBytes(), msg.length());
+        sendPacket.setPort(port);
+        sendPacket.setAddress(serverAddress);
+        clientSocket.send(sendPacket);
     }
 
     /**

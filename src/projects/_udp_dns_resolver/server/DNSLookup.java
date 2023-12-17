@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * @author duyvu
  */
 public class DNSLookup {
@@ -29,11 +28,13 @@ public class DNSLookup {
         dnsMapping.put("www.google.com", "8.8.8.8");
         dnsMapping.put("www.example1.com", "192.168.1.2");
         dnsMapping.put("www.example2.com", "192.168.1.12");
+        dnsMapping.put("www.myhouse.com", "192.168.1.16");
     }
 
     // =================================
     // == Methods
     // =================================
+
     /**
      * Get the only instance of the class DNSLookup
      *
@@ -50,14 +51,12 @@ public class DNSLookup {
      * Get the IPAddress based on domain name
      *
      * @param domainName
-     *
      * @return
      */
     public String getIpAddress(String domainName) {
         if (dnsMapping.isEmpty() || !dnsMapping.containsKey(domainName)) {
             return null;
-        }
-        else {
+        } else {
             return dnsMapping.get(domainName);
         }
     }

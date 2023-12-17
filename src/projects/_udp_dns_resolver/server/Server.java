@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author duyvu
  */
 final public class Server {
@@ -31,10 +30,11 @@ final public class Server {
     // =================================
     public Server() {
         try {
-            // Create the socket object without starting it 
+            // Create the socket object without starting it
+            // If calling the default socket, it will bounnd to the random port
             serverSocket = new DatagramSocket(null);
         } catch (SocketException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            ex.getStackTrace();
         }
     }
 
@@ -47,11 +47,14 @@ final public class Server {
             serverSocket.bind(new InetSocketAddress(SERVER_IP, SERVER_PORT));
             System.out.println("DNS Server is running ... ");
 
-            while (true) {
-                // Receive a datagram by creating a bucket
+            while (!serverSocket.isClosed()) {
+                // Receive a packet by creating a bucket size for limitation
                 byte[] buffer = new byte[1024];
                 DatagramPacket receivingPacket = new DatagramPacket(buffer, buffer.length);
+
+                // This method will block until receive a packet from sender
                 serverSocket.receive(receivingPacket);
+                printClientInfo(receivingPacket);
 
                 // Get IP Address msg from domain name and sender's port, sender's ip address
                 InetAddress senderAddress = receivingPacket.getAddress();
@@ -63,8 +66,7 @@ final public class Server {
                 if (ipAddressMsg == null) {
                     // Send Message not found to the sender
                     sendMsgToClient("IP address not found. Please try again.", senderAddress, senderPort);
-                }
-                else {
+                } else {
                     // Send information to the sender
                     sendMsgToClient(ipAddressMsg, senderAddress, senderPort);
                 }
@@ -93,6 +95,18 @@ final public class Server {
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Print the client's infor based on the datagram packet
+     *
+     * @param clientPacket
+     */
+    private void printClientInfo(DatagramPacket clientPacket) {
+        System.out.println("Client IP: " + clientPacket.getAddress());
+        System.out.println("Client Port: " + clientPacket.getPort());
+        System.out.println("Client Domain Request: " + new String(clientPacket.getData(), 0, clientPacket.getLength()));
+        System.out.println("---------------------------------------");
     }
 
     /**
